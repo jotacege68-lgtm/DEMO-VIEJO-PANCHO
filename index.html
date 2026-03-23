@@ -1,240 +1,442 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Viejo Pancho - Pizzería</title>
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --negro-fondo: #0a0a0a;
-            --negro-caja: #1a1a1a;
+            --negro-caja: #151515;
             --rojo: #e63946;
             --amarillo: #ffb703;
             --blanco: #f1faee;
+            --gris-texto: #a0a0a0;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--negro-fondo);
             color: var(--blanco);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
             padding: 20px;
-            padding-bottom: 100px;
+            padding-bottom: 180px; /* Espacio para el carrito fijo */
         }
 
         header {
             text-align: center;
-            padding: 20px;
+            padding: 30px 0;
             border-bottom: 2px solid var(--rojo);
+            margin-bottom: 20px;
+        }
+
+        .logo-container {
+            margin-bottom: 10px;
         }
 
         .logo-placeholder {
-            font-size: 2rem;
-            font-weight: bold;
+            font-size: 2.5rem;
+            font-weight: 900;
             color: var(--amarillo);
             text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0px var(--rojo);
         }
 
-        h2 { color: var(--amarillo); border-left: 5px solid var(--rojo); padding-left: 10px; }
+        header p {
+            color: var(--gris-texto);
+            font-style: italic;
+            margin: 5px 0 0 0;
+        }
 
-        .categoria {
-            background: var(--negro-caja);
-            margin: 15px 0;
+        .btn-maps {
+            background: var(--amarillo);
+            color: #000;
+            text-decoration: none;
             padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #333;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 183, 3, 0.3);
         }
 
-        .producto {
+        .btn-maps:active { transform: scale(0.98); }
+
+        .categoria-titulo {
+            color: var(--amarillo);
+            font-size: 1.4rem;
+            margin: 25px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .producto-card {
+            background: var(--negro-caja);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #333;
+            border: 1px solid #222;
         }
 
-        .btn-add {
+        .producto-info h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--blanco);
+        }
+
+        .producto-info span {
+            color: var(--amarillo);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .controles {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #222;
+            padding: 5px 10px;
+            border-radius: 50px;
+        }
+
+        .btn-control {
             background: var(--rojo);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             font-weight: bold;
+            font-size: 1.2rem;
         }
 
-        .btn-add:active { transform: scale(0.95); }
+        .btn-control.minus {
+            background: #444;
+        }
 
-        /* Carrito Flotante */
-        #carrito-flotante {
+        .cantidad-display {
+            font-weight: bold;
+            min-width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Carrito Fijo */
+        .footer-cart {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: var(--negro-caja);
-            padding: 20px;
+            background: #111;
             border-top: 3px solid var(--amarillo);
+            padding: 20px;
+            z-index: 1000;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
+        }
+
+        .cart-inner {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .input-direccion {
+            width: 100%;
+            background: #222;
+            border: 1px solid #444;
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .input-direccion:focus {
+            outline: none;
+            border-color: var(--amarillo);
+        }
+
+        .cart-data {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
         }
+
+        .total-label { color: var(--gris-texto); font-size: 0.8rem; text-transform: uppercase; }
+        .total-monto { color: var(--amarillo); font-size: 1.8rem; font-weight: bold; }
 
         .btn-whatsapp {
             background: #25d366;
             color: white;
             text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 50px;
-            font-weight: bold;
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
-        }
-
-        .btn-maps {
-            background: var(--amarillo);
-            color: black;
-            text-decoration: none;
-            padding: 10px;
-            border-radius: 5px;
-            display: block;
-            text-align: center;
-            margin-top: 20px;
             font-weight: bold;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
         }
 
+        .btn-whatsapp:hover { opacity: 0.9; }
+
+        /* Estilo para los details (acordeon) */
+        details {
+            margin-bottom: 10px;
+        }
         details summary {
-            font-size: 1.2rem;
+            list-style: none;
             cursor: pointer;
-            color: var(--amarillo);
-            outline: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-placeholder">EL VIEJO PANCHO</div>
-        <p>Tradición en cada porción</p>
-    </header>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo-placeholder">EL VIEJO PANCHO</div>
+            </div>
+            <p>Pizzería de Barrio</p>
+        </header>
 
-    <a href="https://www.google.com/maps/search/?api=1&query=Pizzeria+El+Viejo+Pancho" target="_blank" class="btn-maps">
-        📍 CÓMO LLEGAR AL LOCAL
-    </a>
-
-    <div class="categoria">
-        <details open>
-            <summary>🍕 PIZZAS</summary>
-            <div class="producto">
-                <span>Pizza Común</span>
-                <div>
-                    <span>$250</span>
-                    <button class="btn-add" onclick="agregarAlCarrito('Pizza Común', 250)">+</button>
-                </div>
-            </div>
-            <div class="producto">
-                <span>Muzzarella</span>
-                <div>
-                    <span>$320</span>
-                    <button class="btn-add" onclick="agregarAlCarrito('Muzzarella', 320)">+</button>
-                </div>
-            </div>
-            <div class="producto">
-                <span>Faina</span>
-                <div>
-                    <span>$80</span>
-                    <button class="btn-add" onclick="agregarAlCarrito('Faina', 80)">+</button>
-                </div>
-            </div>
-        </details>
-    </div>
-
-    <div class="categoria">
-        <details>
-            <summary>🍔 MINUTAS</summary>
-            <div class="producto">
-                <span>Milanesa</span>
-                <div>
-                    <span>$380</span>
-                    <button class="btn-add" onclick="agregarAlCarrito('Milanesa', 380)">+</button>
-                </div>
-            </div>
-            <div class="producto">
-                <span>Chivito</span>
-                <div>
-                    <span>$450</span>
-                    <button class="btn-add" onclick="agregarAlCarrito('Chivito', 450)">+</button>
-                </div>
-            </div>
-            <div class="producto">
-                <span>Sandwich Caliente</span>
-                <div>
-                    <span>$220</span>
-                    <button class="btn-add" onclick="agregarAlCarrito('Sandwich Caliente', 220)">+</button>
-                </div>
-            </div>
-        </details>
-    </div>
-
-    <div class="categoria">
-        <details>
-            <summary>🥤 BEBIDAS</summary>
-            <div class="producto">
-                <span>Refresco 600ml</span>
-                <div>
-                    <span>$110</span>
-                    <button class="btn-add" onclick="agregarAlCarrito('Refresco 600ml', 110)">+</button>
-                </div>
-            </div>
-            <div class="producto">
-                <span>Cerveza 1L</span>
-                <div>
-                    <span>$220</span>
-                    <button class="btn-add" onclick="agregarAlCarrito('Cerveza 1L', 220)">+</button>
-                </div>
-            </div>
-        </details>
-    </div>
-
-    <div id="carrito-flotante">
-        <div>
-            <span style="display: block; font-size: 0.8rem;">TOTAL ESTIMADO</span>
-            <span id="total-precio" style="font-size: 1.5rem; font-weight: bold; color: var(--amarillo);">$0</span>
-        </div>
-        <a href="#" id="whatsapp-link" class="btn-whatsapp" onclick="enviarPedido()">
-            PEDIR POR WHATSAPP
+        <a href="https://www.google.com/maps/search/?api=1&query=Pizzeria+El+Viejo+Pancho" target="_blank" class="btn-maps">
+            <i class="fa-solid fa-location-dot"></i> CÓMO LLEGAR AL LOCAL
         </a>
+
+        <!-- CATEGORÍA PIZZAS -->
+        <details open>
+            <summary class="categoria-titulo">
+                <i class="fa-solid fa-pizza-slice"></i> PIZZAS <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: auto;"></i>
+            </summary>
+            
+            <div class="producto-card">
+                <div class="producto-info">
+                    <h3>Pizza Común</h3>
+                    <span>$250</span>
+                </div>
+                <div class="controles">
+                    <button class="btn-control minus" onclick="cambiarCantidad('Pizza Común', 250, -1)">-</button>
+                    <span class="cantidad-display" id="qty-Pizza-Común">0</span>
+                    <button class="btn-control" onclick="cambiarCantidad('Pizza Común', 250, 1)">+</button>
+                </div>
+            </div>
+
+            <div class="producto-card">
+                <div class="producto-info">
+                    <h3>Muzzarella</h3>
+                    <span>$320</span>
+                </div>
+                <div class="controles">
+                    <button class="btn-control minus" onclick="cambiarCantidad('Muzzarella', 320, -1)">-</button>
+                    <span class="cantidad-display" id="qty-Muzzarella">0</span>
+                    <button class="btn-control" onclick="cambiarCantidad('Muzzarella', 320, 1)">+</button>
+                </div>
+            </div>
+
+            <div class="producto-card">
+                <div class="producto-info">
+                    <h3>Faina</h3>
+                    <span>$80</span>
+                </div>
+                <div class="controles">
+                    <button class="btn-control minus" onclick="cambiarCantidad('Faina', 80, -1)">-</button>
+                    <span class="cantidad-display" id="qty-Faina">0</span>
+                    <button class="btn-control" onclick="cambiarCantidad('Faina', 80, 1)">+</button>
+                </div>
+            </div>
+        </details>
+
+        <!-- CATEGORÍA MINUTAS -->
+        <details open>
+            <summary class="categoria-titulo">
+                <i class="fa-solid fa-burger"></i> MINUTAS <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: auto;"></i>
+            </summary>
+            
+            <div class="producto-card">
+                <div class="producto-info">
+                    <h3>Milanesa</h3>
+                    <span>$380</span>
+                </div>
+                <div class="controles">
+                    <button class="btn-control minus" onclick="cambiarCantidad('Milanesa', 380, -1)">-</button>
+                    <span class="cantidad-display" id="qty-Milanesa">0</span>
+                    <button class="btn-control" onclick="cambiarCantidad('Milanesa', 380, 1)">+</button>
+                </div>
+            </div>
+
+            <div class="producto-card">
+                <div class="producto-info">
+                    <h3>Chivito</h3>
+                    <span>$450</span>
+                </div>
+                <div class="controles">
+                    <button class="btn-control minus" onclick="cambiarCantidad('Chivito', 450, -1)">-</button>
+                    <span class="cantidad-display" id="qty-Chivito">0</span>
+                    <button class="btn-control" onclick="cambiarCantidad('Chivito', 450, 1)">+</button>
+                </div>
+            </div>
+
+            <div class="producto-card">
+                <div class="producto-info">
+                    <h3>Sandwich Caliente</h3>
+                    <span>$220</span>
+                </div>
+                <div class="controles">
+                    <button class="btn-control minus" onclick="cambiarCantidad('Sandwich Caliente', 220, -1)">-</button>
+                    <span class="cantidad-display" id="qty-Sandwich-Caliente">0</span>
+                    <button class="btn-control" onclick="cambiarCantidad('Sandwich Caliente', 220, 1)">+</button>
+                </div>
+            </div>
+        </details>
+
+        <!-- CATEGORÍA BEBIDAS -->
+        <details open>
+            <summary class="categoria-titulo">
+                <i class="fa-solid fa-bottle-water"></i> BEBIDAS <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: auto;"></i>
+            </summary>
+            
+            <div class="producto-card">
+                <div class="producto-info">
+                    <h3>Refresco 600ml</h3>
+                    <span>$110</span>
+                </div>
+                <div class="controles">
+                    <button class="btn-control minus" onclick="cambiarCantidad('Refresco 600ml', 110, -1)">-</button>
+                    <span class="cantidad-display" id="qty-Refresco-600ml">0</span>
+                    <button class="btn-control" onclick="cambiarCantidad('Refresco 600ml', 110, 1)">+</button>
+                </div>
+            </div>
+
+            <div class="producto-card">
+                <div class="producto-info">
+                    <h3>Cerveza 1L</h3>
+                    <span>$220</span>
+                </div>
+                <div class="controles">
+                    <button class="btn-control minus" onclick="cambiarCantidad('Cerveza 1L', 220, -1)">-</button>
+                    <span class="cantidad-display" id="qty-Cerveza-1L">0</span>
+                    <button class="btn-control" onclick="cambiarCantidad('Cerveza 1L', 220, 1)">+</button>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <!-- FOOTER CARRITO -->
+    <div class="footer-cart">
+        <div class="cart-inner">
+            <input type="text" id="direccion" class="input-direccion" placeholder="Ingresa tu dirección aquí...">
+            
+            <div class="cart-data">
+                <div>
+                    <span class="total-label">Gasto Total</span>
+                    <div class="total-monto" id="total-display">$0</div>
+                </div>
+                <button class="btn-whatsapp" onclick="enviarPedido()">
+                    <i class="fa-brands fa-whatsapp"></i> ENVIAR PEDIDO
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
-        let carrito = [];
+        // Estado del carrito: { "Nombre": { precio: 250, cantidad: 2 } }
+        let carrito = {};
         let total = 0;
 
-        function agregarAlCarrito(nombre, precio) {
-            carrito.push({nombre, precio});
-            total += precio;
-            actualizarInterfaz();
+        function cambiarCantidad(nombre, precio, delta) {
+            // Inicializar si no existe
+            if (!carrito[nombre]) {
+                carrito[nombre] = { precio: precio, cantidad: 0 };
+            }
+
+            // Cambiar cantidad
+            carrito[nombre].cantidad += delta;
+
+            // No permitir menos de 0
+            if (carrito[nombre].cantidad < 0) {
+                carrito[nombre].cantidad = 0;
+            }
+
+            // Actualizar el DOM
+            const idElemento = `qty-${nombre.replace(/\s+/g, '-')}`;
+            const display = document.getElementById(idElemento);
+            if(display) display.innerText = carrito[nombre].cantidad;
+
+            recalcularTotal();
         }
 
-        function actualizarInterfaz() {
-            document.getElementById('total-precio').innerText = `$${total}`;
+        function recalcularTotal() {
+            total = 0;
+            for (const item in carrito) {
+                total += carrito[item].precio * carrito[item].cantidad;
+            }
+            document.getElementById('total-display').innerText = `$${total}`;
         }
 
         function enviarPedido() {
-            if (carrito.length === 0) {
-                alert("El carrito está vacío, socio. ¡Agrega algo rico!");
+            const direccion = document.getElementById('direccion').value.trim();
+            
+            if (total === 0) {
+                alert("¡Socio! No has seleccionado ningún producto.");
+                return;
+            }
+
+            if (direccion === "") {
+                alert("Por favor, ingresa tu dirección para el envío.");
                 return;
             }
 
             const telefono = "59895738828";
-            let mensaje = "¡Hola Viejo Pancho! Quería hacer un pedido:%0A%0A";
+            let mensaje = "*PEDIDO - EL VIEJO PANCHO*%0A%0A";
             
-            carrito.forEach(item => {
-                mensaje += `- ${item.nombre}: $${item.precio}%0A`;
-            });
+            // Filtrar y agregar productos con cantidad > 0
+            for (const item in carrito) {
+                if (carrito[item].cantidad > 0) {
+                    mensaje += `• *${carrito[item].cantidad}x* ${item}%0A`;
+                }
+            }
 
-            mensaje += `%0A*TOTAL: $${total}*%0A%0A_Enviado desde la Web_`;
+            mensaje += `%0A*GASTO TOTAL: $${total}*`;
+            mensaje += `%0A%0A📍 *Dirección cliente:*%0A${direccion}`;
+            mensaje += `%0A%0A_Pedido realizado vía web_`;
 
             const url = `https://wa.me/${telefono}?text=${mensaje}`;
             window.open(url, '_blank');
