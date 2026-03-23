@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Viejo Pancho - Pizzería</title>
+    <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -149,7 +150,7 @@
             color: var(--blanco);
         }
 
-        /* Footer del Carrito */
+        /* Footer del Carrito Fijo */
         .footer-cart {
             position: fixed;
             bottom: 0;
@@ -212,14 +213,17 @@
     <div class="container">
         <header>
             <div class="logo-container">
+                <!-- Logo desde GitHub -->
                 <img src="https://raw.githubusercontent.com/jotacege68-lgtm/DEMO-VIEJO-PANCHO/refs/heads/main/1774281870711.png" alt="Pizzería El Viejo Pancho" class="main-logo">
             </div>
         </header>
 
-        <a href="https://maps.google.com" target="_blank" class="btn-maps">
+        <!-- Botón de Ubicación con el Link Real -->
+        <a href="https://maps.app.goo.gl/emBovVgyMAiY8orq5" target="_blank" class="btn-maps">
             <i class="fa-solid fa-location-dot"></i> CÓMO LLEGAR AL LOCAL
         </a>
 
+        <!-- CATEGORÍA PIZZAS -->
         <details open>
             <summary class="categoria-titulo">
                 <i class="fa-solid fa-pizza-slice"></i> PIZZAS
@@ -253,6 +257,7 @@
             </div>
         </details>
 
+        <!-- CATEGORÍA MINUTAS -->
         <details open>
             <summary class="categoria-titulo">
                 <i class="fa-solid fa-utensils"></i> MINUTAS
@@ -286,6 +291,7 @@
             </div>
         </details>
 
+        <!-- CATEGORÍA BEBIDAS -->
         <details open>
             <summary class="categoria-titulo">
                 <i class="fa-solid fa-bottle-water"></i> BEBIDAS
@@ -311,9 +317,10 @@
         </details>
     </div>
 
+    <!-- PIE DE PÁGINA: CARRITO -->
     <div class="footer-cart">
         <div class="cart-inner">
-            <input type="text" id="direccion" class="input-direccion" placeholder="📍 Dirección de entrega...">
+            <input type="text" id="direccion" class="input-direccion" placeholder="📍 Dirección para el delivery...">
             <div class="cart-data">
                 <div>
                     <span class="total-label">Total Pedido</span>
@@ -352,7 +359,7 @@
 
         function enviarPedido() {
             const direccion = document.getElementById('direccion').value.trim();
-            if (total === 0) { alert("Socio, el carrito está vacío."); return; }
+            if (total === 0) { alert("¡Socio! No has elegido nada."); return; }
             if (direccion === "") { alert("Por favor, ingresa tu dirección."); return; }
 
             const telefono = "59895738828";
@@ -368,6 +375,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
