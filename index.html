@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Viejo Pancho - Pizzería</title>
+    <style>
+        :root {
+            --negro-fondo: #0a0a0a;
+            --negro-caja: #1a1a1a;
+            --rojo: #e63946;
+            --amarillo: #ffb703;
+            --blanco: #f1faee;
+        }
+
+        body {
+            background-color: var(--negro-fondo);
+            color: var(--blanco);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 2px solid var(--rojo);
+        }
+
+        .logo-placeholder {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--amarillo);
+            text-transform: uppercase;
+        }
+
+        h2 { color: var(--amarillo); border-left: 5px solid var(--rojo); padding-left: 10px; }
+
+        .categoria {
+            background: var(--negro-caja);
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .producto {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .btn-add {
+            background: var(--rojo);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-add:active { transform: scale(0.95); }
+
+        /* Carrito Flotante */
+        #carrito-flotante {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--negro-caja);
+            padding: 20px;
+            border-top: 3px solid var(--amarillo);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-maps {
+            background: var(--amarillo);
+            color: black;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        details summary {
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--amarillo);
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-placeholder">EL VIEJO PANCHO</div>
+        <p>Tradición en cada porción</p>
+    </header>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Pizzeria+El+Viejo+Pancho" target="_blank" class="btn-maps">
+        📍 CÓMO LLEGAR AL LOCAL
+    </a>
+
+    <div class="categoria">
+        <details open>
+            <summary>🍕 PIZZAS</summary>
+            <div class="producto">
+                <span>Pizza Común</span>
+                <div>
+                    <span>$250</span>
+                    <button class="btn-add" onclick="agregarAlCarrito('Pizza Común', 250)">+</button>
+                </div>
+            </div>
+            <div class="producto">
+                <span>Muzzarella</span>
+                <div>
+                    <span>$320</span>
+                    <button class="btn-add" onclick="agregarAlCarrito('Muzzarella', 320)">+</button>
+                </div>
+            </div>
+            <div class="producto">
+                <span>Faina</span>
+                <div>
+                    <span>$80</span>
+                    <button class="btn-add" onclick="agregarAlCarrito('Faina', 80)">+</button>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <div class="categoria">
+        <details>
+            <summary>🍔 MINUTAS</summary>
+            <div class="producto">
+                <span>Milanesa</span>
+                <div>
+                    <span>$380</span>
+                    <button class="btn-add" onclick="agregarAlCarrito('Milanesa', 380)">+</button>
+                </div>
+            </div>
+            <div class="producto">
+                <span>Chivito</span>
+                <div>
+                    <span>$450</span>
+                    <button class="btn-add" onclick="agregarAlCarrito('Chivito', 450)">+</button>
+                </div>
+            </div>
+            <div class="producto">
+                <span>Sandwich Caliente</span>
+                <div>
+                    <span>$220</span>
+                    <button class="btn-add" onclick="agregarAlCarrito('Sandwich Caliente', 220)">+</button>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <div class="categoria">
+        <details>
+            <summary>🥤 BEBIDAS</summary>
+            <div class="producto">
+                <span>Refresco 600ml</span>
+                <div>
+                    <span>$110</span>
+                    <button class="btn-add" onclick="agregarAlCarrito('Refresco 600ml', 110)">+</button>
+                </div>
+            </div>
+            <div class="producto">
+                <span>Cerveza 1L</span>
+                <div>
+                    <span>$220</span>
+                    <button class="btn-add" onclick="agregarAlCarrito('Cerveza 1L', 220)">+</button>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <div id="carrito-flotante">
+        <div>
+            <span style="display: block; font-size: 0.8rem;">TOTAL ESTIMADO</span>
+            <span id="total-precio" style="font-size: 1.5rem; font-weight: bold; color: var(--amarillo);">$0</span>
+        </div>
+        <a href="#" id="whatsapp-link" class="btn-whatsapp" onclick="enviarPedido()">
+            PEDIR POR WHATSAPP
+        </a>
+    </div>
+
+    <script>
+        let carrito = [];
+        let total = 0;
+
+        function agregarAlCarrito(nombre, precio) {
+            carrito.push({nombre, precio});
+            total += precio;
+            actualizarInterfaz();
+        }
+
+        function actualizarInterfaz() {
+            document.getElementById('total-precio').innerText = `$${total}`;
+        }
+
+        function enviarPedido() {
+            if (carrito.length === 0) {
+                alert("El carrito está vacío, socio. ¡Agrega algo rico!");
+                return;
+            }
+
+            const telefono = "59895738828";
+            let mensaje = "¡Hola Viejo Pancho! Quería hacer un pedido:%0A%0A";
+            
+            carrito.forEach(item => {
+                mensaje += `- ${item.nombre}: $${item.precio}%0A`;
+            });
+
+            mensaje += `%0A*TOTAL: $${total}*%0A%0A_Enviado desde la Web_`;
+
+            const url = `https://wa.me/${telefono}?text=${mensaje}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
